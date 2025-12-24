@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Todo</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="text-light">
+  <!-- Background blobs -->
+  <div class="bg-blob b1"></div>
+  <div class="bg-blob b2"></div>
+  <div class="bg-blob b3"></div>
+
+  <!-- ✅ Custom Toast Container -->
+  <div id="toastHost" class="toast-host"></div>
+
+  <main class="container py-5">
+    <section class="glass-card p-4 p-md-5 rounded-5 border border-white-10 shadow-lg mx-auto"
+      style="max-width: 1100px;">
+      <!-- Header -->
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+        <div>
+          <span class="badge rounded-pill bg-white-10 border border-white-10 px-3 py-2 mb-3">
+            <i class="bi bi-stars me-1"></i>
+            Dark • Glass • Smooth • LocalStorage
+          </span>
+
+          <h1 class="display-6 fw-bold py-2 mb-0">
+            <span>✨</span>
+            <span class="text-white">Smart Todo</span>
+          </h1>
+          <p class="text-white-70 mb-0">
+            Personal & Professional tasks — click text to edit • drag to reorder • delete fades out
+          </p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+          <button id="resetBtn" class="btn btn-light rounded-4 px-3">
+            <i class="bi bi-arrow-clockwise me-1"></i> Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <ul class="nav nav-pills gap-2 mb-4" id="todoTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active rounded-4 px-3 text-white" id="personal-tab" data-bs-toggle="pill"
+            data-bs-target="#personal" type="button" role="tab">
+            <i class="bi bi-person-fill me-1"></i> Personal
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-4 px-3 text-white" id="professional-tab" data-bs-toggle="pill"
+            data-bs-target="#professional" type="button" role="tab">
+            <i class="bi bi-briefcase-fill me-1"></i> Professional
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- PERSONAL -->
+        <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+
+          <!-- ✅ Search Bar (per tab) -->
+          <div class="row g-2 mb-3">
+            <div class="col-12">
+              <div class="input-group input-group-lg">
+                <span class="input-group-text rounded-start-4 dark-addon border-white-10">
+                  <i class="bi bi-search"></i>
+                </span>
+                <input id="personalSearch" class="form-control rounded-end-4 dark-input"
+                  placeholder="Search tasks in Personal... (e.g., gym, call, read)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 align-items-end">
+            <div class="col-12">
+              <label class="form-label text-white-70 mb-1">What do you need to do?</label>
+              <input id="personalInput" class="form-control form-control-lg rounded-4 dark-input"
+                placeholder="e.g., Gym at 6pm / Read 20 pages / Family call">
+            </div>
+
+            <!-- ✅ Priority -->
+            <div class="col-12 col-lg-6">
+              <label class="form-label text-white-70 mb-1">Priority (optional)</label>
+
+              <select id="personalPriority" class="form-select form-select-lg rounded-4 dark-input" required>
+                <option value="" selected disabled hidden>Choose Priority</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+
+            <div class="col-12 col-lg-6">
+              <label class="form-label text-white-70 mb-1">Due date (optional)</label>
+              <input id="personalDue" class="form-control form-control-lg rounded-4 dark-input" type="date">
+            </div>
+
+            <div class="col-12 d-grid">
+              <button id="personalAdd" class="btn btn-primary btn-lg rounded-4 fw-semibold">
+                <i class="bi bi-plus-lg me-1"></i> Add
+              </button>
+            </div>
+          </div>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-4">
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-outline-light rounded-4" data-action="clearCompleted" data-scope="personal">
+                <i class="bi bi-check2-circle me-1"></i> Clear Completed
+              </button>
+              <button class="btn btn-outline-light rounded-4" data-action="sortDue" data-scope="personal">
+                <i class="bi bi-sort-down me-1"></i> Sort by Due
+              </button>
+            </div>
+            <div id="personalSummary" class="text-white-70"></div>
+          </div>
+
+          <div id="personalList" class="mt-3 d-flex flex-column gap-2"></div>
+
+          <div id="personalPager" class="mt-3"></div>
+
+          <div class="mt-3 p-3 rounded-4 border border-white-10 bg-white-06 text-white-70 small">
+            <span class="badge bg-white-10 border border-white-10 rounded-pill me-2">
+              <i class="bi bi-grip-vertical me-1"></i> Drag to reorder
+            </span>
+            <span class="badge bg-white-10 border border-white-10 rounded-pill me-2">
+              <i class="bi bi-calendar2-week me-1"></i> Due date optional
+            </span>
+            <span class="badge bg-white-10 border border-white-10 rounded-pill">
+              <i class="bi bi-pencil-square me-1"></i> Click text to edit
+            </span>
+          </div>
+        </div>
+
+        <!-- PROFESSIONAL -->
+        <div class="tab-pane fade" id="professional" role="tabpanel" aria-labelledby="professional-tab">
+
+          <!-- ✅ Search Bar -->
+          <div class="row g-2 mb-3">
+            <div class="col-12">
+              <div class="input-group input-group-lg">
+                <span class="input-group-text rounded-start-4 dark-addon border-white-10">
+                  <i class="bi bi-search"></i>
+                </span>
+                <input id="professionalSearch" class="form-control rounded-end-4 dark-input"
+                  placeholder="Search tasks in Professional... (e.g., proposal, bug, client)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 align-items-end">
+            <div class="col-12">
+              <label class="form-label text-white-70 mb-1">What do you need to do?</label>
+              <input id="professionalInput" class="form-control form-control-lg rounded-4 dark-input"
+                placeholder="e.g., Send proposal / Fix bug #214 / Client call">
+            </div>
+
+            <!-- ✅ Priority -->
+            <div class="col-12 col-lg-6">
+              <label class="form-label text-white-70 mb-1">Priority (optional)</label>
+
+              <select id="professionalPriority" class="form-select form-select-lg rounded-4 dark-input" required>
+                <option value="" selected disabled hidden>Choose Priority</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+
+
+            <div class="col-12 col-lg-6">
+              <label class="form-label text-white-70 mb-1">Due date (optional)</label>
+              <input id="professionalDue" class="form-control form-control-lg rounded-4 dark-input" type="date">
+            </div>
+
+            <div class="col-12 d-grid">
+              <button id="professionalAdd" class="btn btn-primary btn-lg rounded-4 fw-semibold">
+                <i class="bi bi-plus-lg me-1"></i> Add
+              </button>
+            </div>
+          </div>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-4">
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-outline-light rounded-4" data-action="clearCompleted" data-scope="professional">
+                <i class="bi bi-check2-circle me-1"></i> Clear Completed
+              </button>
+              <button class="btn btn-outline-light rounded-4" data-action="sortDue" data-scope="professional">
+                <i class="bi bi-sort-down me-1"></i> Sort by Due
+              </button>
+            </div>
+            <div id="professionalSummary" class="text-white-70"></div>
+          </div>
+
+          <div id="professionalList" class="mt-3 d-flex flex-column gap-2"></div>
+
+          <div id="professionalPager" class="mt-3"></div>
+
+          <div class="mt-3 p-3 rounded-4 border border-white-10 bg-white-06 text-white-70 small">
+            <span class="badge bg-white-10 border border-white-10 rounded-pill me-2">
+              <i class="bi bi-grip-vertical me-1"></i> Drag to reorder
+            </span>
+            <span class="badge bg-white-10 border border-white-10 rounded-pill me-2">
+              <i class="bi bi-calendar2-week me-1"></i> Due date optional
+            </span>
+            <span class="badge bg-white-10 border border-white-10 rounded-pill">
+              <i class="bi bi-pencil-square me-1"></i> Click text to edit
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4 text-white-60 small">
+        Built using Bootstrap 5 • Data saved in LocalStorage
+      </div>
+    </section>
+  </main>
+
+  <!-- Bootstrap bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Your JS -->
+  <script src="./script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,316 @@
+:root {
+  --bg0: #070A13;
+  --bg1: #0A1022;
+  --w10: rgba(255, 255, 255, .10);
+  --w06: rgba(255, 255, 255, .06);
+  --w14: rgba(255, 255, 255, .14);
+  --muted: rgba(255, 255, 255, .70);
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 700px at 10% 10%, rgba(124, 58, 237, .24), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(34, 211, 238, .18), transparent 55%),
+    radial-gradient(900px 600px at 20% 90%, rgba(52, 211, 153, .16), transparent 55%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
+  overflow-x: hidden;
+}
+
+/* blobs */
+.bg-blob {
+  position: fixed;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: .35;
+  z-index: -1;
+  pointer-events: none;
+  animation: floaty 14s ease-in-out infinite;
+}
+
+.bg-blob.b1 {
+  left: -140px;
+  top: -140px;
+  background: radial-gradient(circle at 30% 30%, rgba(244, 114, 182, .9), rgba(124, 58, 237, .25));
+}
+
+.bg-blob.b2 {
+  right: -180px;
+  top: 40px;
+  background: radial-gradient(circle at 30% 30%, rgba(34, 211, 238, .9), rgba(245, 158, 11, .18));
+  animation-duration: 16s;
+}
+
+.bg-blob.b3 {
+  left: 10%;
+  bottom: -240px;
+  background: radial-gradient(circle at 30% 30%, rgba(52, 211, 153, .8), rgba(124, 58, 237, .20));
+  animation-duration: 18s;
+}
+
+@keyframes floaty {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -22px) scale(1.08); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* glass card */
+.glass-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .05));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* utilities */
+.bg-white-10 { background: var(--w10) !important; }
+.bg-white-06 { background: var(--w06) !important; }
+.border-white-10 { border-color: var(--w14) !important; }
+.text-white-70 { color: var(--muted) !important; }
+.text-white-60 { color: rgba(255, 255, 255, .60) !important; }
+
+/* inputs */
+.dark-input {
+  background: rgba(8, 14, 30, .55) !important;
+  border-color: rgba(255, 255, 255, .14) !important;
+  color: #fff !important;
+}
+.dark-input::placeholder { color: rgba(255, 255, 255, .55); }
+
+/* arrow icon white */
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 16px 16px !important;
+}
+
+/* input-group addon for search icon */
+.dark-addon{
+  background: rgba(8, 14, 30, .55) !important;
+  color: rgba(255,255,255,.85) !important;
+}
+
+/* task */
+.todo-item {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform .18s ease, opacity .18s ease, background .18s ease, filter .18s ease;
+}
+.todo-item:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, .08);
+}
+.todo-item.done { background: rgba(255, 255, 255, .05); }
+
+/* completed line */
+.todo-item.done .todo-text {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(255, 255, 255, .65);
+  text-decoration-skip-ink: none;
+  opacity: .70;
+}
+
+/* checkbox */
+.todo-check {
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14);
+  cursor: pointer;
+  position: relative;
+}
+.todo-check:checked {
+  background: linear-gradient(135deg, #22D3EE, #34D399);
+  border-color: transparent;
+}
+.todo-check:checked::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 5px;
+  width: 7px;
+  height: 12px;
+  border: 3px solid #071018;
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(40deg);
+}
+
+/* done animation */
+@keyframes doneSettle {
+  0% { transform: translateY(0) scale(1); }
+  45% { transform: translateY(-2px) scale(1.01); }
+  100% { transform: translateY(0) scale(1); }
+}
+.todo-item.pulse-done { animation: doneSettle 420ms ease; }
+
+/* delete fade */
+.fade-out {
+  opacity: 0 !important;
+  transform: translateY(6px) scale(.98) !important;
+}
+
+/* drag hints */
+.dragging { opacity: .55; }
+.drop-hint { outline: 2px solid rgba(34, 211, 238, .35); outline-offset: 2px; }
+
+/* tab transitions */
+.tab-pane {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+.tab-pane.active.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================
+   Priority badges (eye catching)
+   ========================= */
+.prio-badge{
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  padding: .35rem .6rem;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+.prio-low   { border-color: rgba(52,211,153,.35); box-shadow: 0 10px 24px rgba(52,211,153,.10); }
+.prio-med   { border-color: rgba(245,158,11,.35); box-shadow: 0 10px 24px rgba(245,158,11,.10); }
+.prio-high  { border-color: rgba(244,114,182,.35); box-shadow: 0 10px 24px rgba(244,114,182,.10); }
+
+/* =========================
+   Custom Toast (no Bootstrap toast)
+   ========================= */
+.toast-host{
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(360px, calc(100vw - 36px));
+}
+
+.ttoast{
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07));
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 18px;
+  padding: 12px 12px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 18px 50px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.14);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  transform: translateY(-6px);
+  opacity: 0;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.ttoast.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+.ttoast .ico{
+  width: 38px; height: 38px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  flex: 0 0 auto;
+}
+.ttoast .content{
+  flex: 1;
+  min-width: 0;
+}
+.ttoast .title{
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+}
+.ttoast .msg{
+  color: rgba(255,255,255,.72);
+  font-size: .9rem;
+  margin-top: 2px;
+}
+.ttoast .close{
+  background: transparent;
+  border: 0;
+  color: rgba(255,255,255,.75);
+  font-size: 18px;
+  line-height: 1;
+  padding: 6px 8px;
+  border-radius: 12px;
+}
+.ttoast .close:hover{
+  background: rgba(255,255,255,.08);
+}
+
+/* Make date picker icon white (Chrome/Edge/Safari) */
+.dark-input[type="date"]::-webkit-calendar-picker-indicator{
+  filter: invert(1);
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* Optional: thoda bright */
+.dark-input[type="date"]::-webkit-calendar-picker-indicator:hover{
+  filter: invert(1) brightness(1.2);
+}
+
+.pager-glass {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 10px 10px;
+}
+
+.pager-glass .page-link {
+  background: rgba(8, 14, 30, .55);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.85);
+  border-radius: 14px !important;
+  padding: .5rem .8rem;
+  transition: transform .15s ease, background .15s ease, opacity .15s ease;
+}
+
+.pager-glass .page-link:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.08);
+  color: #fff;
+}
+
+.pager-glass .page-item.active .page-link {
+  background: linear-gradient(135deg, rgba(34,211,238,.35), rgba(52,211,153,.25));
+  border-color: rgba(34,211,238,.35);
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(34,211,238,.12);
+}
+
+.pager-glass .page-item.disabled .page-link {
+  opacity: .45;
+}
+
+/* Smooth list transitions on page change */
+.list-page-anim {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+.list-page-anim.show {
+  opacity: 1;
+  transform: translateY(0);
+}
