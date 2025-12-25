@@ -80,6 +80,7 @@ It provides a clean, smooth, dark glassmorphism UI with **Personal** and **Profe
 ### 6) 📄 Pagination (5 Tasks per Page)
 - Added **Bootstrap 5 styled pagination**
 - Each page contains **5 tasks**
+- When add **6 task** pagination appear
 - Prevents long scrolling
 - Includes smooth transitions on page change + auto scroll to the list
 
