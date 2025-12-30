@@ -9,11 +9,7 @@
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(1100px 700px at 10% 10%, rgba(124, 58, 237, .24), transparent 60%),
-    radial-gradient(900px 600px at 90% 20%, rgba(34, 211, 238, .18), transparent 55%),
-    radial-gradient(900px 600px at 20% 90%, rgba(52, 211, 153, .16), transparent 55%),
-    linear-gradient(180deg, var(--bg0), var(--bg1));
+  background: linear-gradient(180deg, var(--bg0), var(--bg1));
   overflow-x: hidden;
 }
 
